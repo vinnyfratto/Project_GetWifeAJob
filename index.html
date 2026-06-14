@@ -1,26 +1,72 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project: Get Wife a Job</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTracker — Medical Coding Job Search CRM</title>
+  <meta name="description" content="Personal CRM for Sarah Mitchell — Medical Coding, Radiology Coder, CPC-A, Texas remote job search.">
+
+  <!-- Prevent FOUC in dark mode -->
+  <script>
+    try {
+      const s = JSON.parse(localStorage.getItem('jt_settings'));
+      if (s && s.darkMode) document.documentElement.classList.add('dark');
+    } catch(e){}
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Project: Get Wife a Job</h1>
-    <p class="tagline">The mission. The plan. The progress.</p>
-  </header>
+  <div id="app">
 
-  <main>
-    <section id="about">
-      <h2>About</h2>
-      <p>Coming soon.</p>
-    </section>
-  </main>
+    <!-- ── Sidebar (desktop) ── -->
+    <aside id="sidebar"></aside>
 
-  <footer>
-    <p>&copy; 2026</p>
-  </footer>
+    <!-- ── Main Content Area ── -->
+    <div id="content">
+
+      <!-- ── Topbar ── -->
+      <header id="topbar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input id="global-search" type="text" placeholder="Search recruiters, companies, jobs…" autocomplete="off">
+        </div>
+        <div class="topbar-actions">
+          <button class="dark-toggle" onclick="App.applyDarkMode(!document.documentElement.classList.contains('dark')); Storage.Settings.set({darkMode:document.documentElement.classList.contains('dark')})" title="Toggle dark mode">
+            🌙
+          </button>
+          <div class="user-avatar" style="width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;">SM</div>
+        </div>
+      </header>
+
+      <!-- ── View Output ── -->
+      <main id="main-content">
+        <div style="display:flex;align-items:center;justify-content:center;height:60vh;color:var(--text-muted);font-size:15px;">
+          Loading…
+        </div>
+      </main>
+
+    </div><!-- /content -->
+
+  </div><!-- /app -->
+
+  <!-- ── Mobile Bottom Nav ── -->
+  <nav id="bottom-nav"></nav>
+
+  <!-- ── Script Load Order ── -->
+  <script src="js/storage.js"></script>
+  <script src="js/import-export.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/recruiters.js"></script>
+  <script src="js/companies.js"></script>
+  <script src="js/jobs.js"></script>
+  <script src="js/applications.js"></script>
+  <script src="js/interviews.js"></script>
+  <script src="js/followups.js"></script>
+  <script src="js/resumevault.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
