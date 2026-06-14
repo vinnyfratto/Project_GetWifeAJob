@@ -1,0 +1,38 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #f9f6f2;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #2c2c2c;
+  color: #fff;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+header h1 { font-size: 2rem; font-weight: 700; }
+header .tagline { margin-top: .5rem; opacity: .7; font-size: 1rem; }
+
+main {
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+section { margin-bottom: 2.5rem; }
+section h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: .75rem; border-bottom: 2px solid #e0dbd4; padding-bottom: .4rem; }
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: .8rem;
+  opacity: .5;
+}
