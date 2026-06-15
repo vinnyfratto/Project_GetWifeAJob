@@ -48,11 +48,11 @@ const Recruiters = (() => {
         : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add email">+ Email</button>';
       const contactCell = '<span style="display:flex;gap:10px;align-items:center">' + websiteLink + '<span style="color:var(--border-strong)">|</span>' + emailLink + '</span>';
 
+      const fitClass = r.radiology_fit==="High" ? "badge-green" : r.radiology_fit==="Medium" ? "badge-medium" : "badge-gray";
       tableRows += '<tr>' +
         '<td>' + nameCell + '</td>' +
         '<td>' + contactCell + '</td>' +
-        '<td><span class="badge badge-' + (r.priority||"").toLowerCase() + '">' + (r.priority||"") + '</span></td>' +
-        '<td><span class="badge badge-' + (r.radiology_fit==="High" ? "green" : "gray") + '">' + (r.radiology_fit||"—") + '</span></td>' +
+        '<td><span class="badge ' + fitClass + '">' + (r.radiology_fit||"—") + '</span></td>' +
         '<td class="actions-cell">' +
           '<button class="btn-icon" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Edit">✏️</button>' +
           '<button class="btn-icon btn-danger" onclick="Recruiters.remove(\'' + r.id + '\')" title="Delete">🗑</button>' +
@@ -61,7 +61,7 @@ const Recruiters = (() => {
     });
 
     if (!tableRows) {
-      tableRows = '<tr><td colspan="5" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
+      tableRows = '<tr><td colspan="4" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
     }
 
     return '<div class="view-header">' +
@@ -82,7 +82,6 @@ const Recruiters = (() => {
           '<thead><tr>' +
             _th("Agency / Recruiter","name") +
             '<th>Contact</th>' +
-            _th("Priority","priority") +
             '<th>Radiology Fit</th>' +
             '<th>Actions</th>' +
           '</tr></thead>' +
