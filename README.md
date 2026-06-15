@@ -1,6 +1,6 @@
 ﻿# JobTracker CRM
 
-Personal job search CRM for **Sarah Mitchell** — Medical Coding, Radiology Coder, CPC-A, Texas remote job search.
+Personal job search CRM for **Sara Fratto** — Medical Coding, Radiology Coder, CPC-A, Texas remote job search.
 
 ## Quick Start
 
