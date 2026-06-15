@@ -71,7 +71,7 @@ const Storage = (() => {
   const Settings = {
     get: function() {
       return _getObj(KEYS.settings, {
-        name: "Sarah Mitchell",
+        name: "Sara Fratto",
         email: "",
         phone: "",
         targetTitle: "Remote Radiology / Medical Coder",

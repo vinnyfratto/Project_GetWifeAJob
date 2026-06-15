@@ -7,16 +7,10 @@ const App = (() => {
   let _globalSearch = "";
 
   const NAV_ITEMS = [
-    { id:"dashboard",    label:"Dashboard",     icon:"⊞" },
-    { id:"recruiters",   label:"Recruiters",    icon:"👤" },
-    { id:"companies",    label:"Companies",     icon:"🏢" },
-    { id:"jobs",         label:"Jobs",          icon:"💼" },
-    { id:"applications", label:"Applications",  icon:"📋" },
-    { id:"interviews",   label:"Interviews",    icon:"🎤" },
-    { id:"followups",    label:"Follow-Ups",    icon:"🔔" },
-    { id:"resumevault",  label:"Resume Vault",  icon:"📄" },
-    { id:"analytics",    label:"Analytics",     icon:"📊" },
-    { id:"settings",     label:"Settings",      icon:"⚙️" },
+    { id:"dashboard",  label:"Dashboard",  icon:"⊞" },
+    { id:"recruiters", label:"Recruiters", icon:"👤" },
+    { id:"companies",  label:"Companies",  icon:"🏢" },
+    { id:"settings",   label:"Settings",   icon:"⚙️" },
   ];
 
   function init() {
@@ -48,7 +42,7 @@ const App = (() => {
       '</a>';
     });
     nav += '</nav>';
-    nav += '<div class="sidebar-footer"><div class="sidebar-user"><span class="user-avatar">SM</span><span class="user-name">Sarah Mitchell</span></div></div>';
+    nav += '<div class="sidebar-footer"><div class="sidebar-user"><span class="user-avatar">SF</span><span class="user-name">Sara Fratto</span></div></div>';
     sidebar.innerHTML = nav;
   }
 
