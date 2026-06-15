@@ -11,11 +11,13 @@ const Recruiters = (() => {
   function _logo(r) {
     const domain = r.website ? r.website.replace(/https?:\/\/(www\.)?/,"").split("/")[0] : "";
     const initial = (r.name||"?")[0].toUpperCase();
-    const logoUrl = domain ? "https://logo.clearbit.com/" + domain : "";
+    // Always render the fallback initial; overlay the logo img on top.
+    // onerror just hides the img — no HTML injection needed.
     const fallback = '<div class="rec-logo-fallback">' + initial + '</div>';
-    if (!logoUrl) return fallback;
-    return '<img class="rec-logo-img" src="' + logoUrl + '" alt="" ' +
-      'onerror="this.outerHTML=\'' + fallback.replace(/'/g,"\\'") + '\'">';
+    if (!domain) return fallback;
+    return fallback +
+      '<img class="rec-logo-img" src="https://logo.clearbit.com/' + domain + '" alt="" ' +
+      'onerror="this.style.display=\'none\'">';
   }
 
   function render() {
