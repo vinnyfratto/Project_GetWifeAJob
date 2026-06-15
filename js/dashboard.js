@@ -10,7 +10,7 @@ const Dashboard = (() => {
     overlay.id = "kitten-dialog";
     overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9999;";
     overlay.innerHTML =
-      '<div style="background:var(--card-bg);border-radius:18px;padding:32px 40px;text-align:center;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.35);">' +
+      '<div style="background:#ffffff;border-radius:18px;padding:32px 40px;text-align:center;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.35);">' +
         '<img src="images/Mika.jpg" style="width:220px;height:220px;object-fit:cover;border-radius:12px;margin-bottom:18px;display:block;margin-left:auto;margin-right:auto;">' +
         '<p style="font-size:22px;font-weight:800;color:var(--text);margin:0 0 20px;">No, you find a job mommy 🐾</p>' +
         '<button onclick="document.getElementById(\'kitten-dialog\').remove()" ' +
