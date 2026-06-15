@@ -32,8 +32,11 @@ const Companies = (() => {
           (r.notes ? '<div class="company-notes">' + r.notes + '</div>' : '') +
         '</div>' +
         '<div class="company-card-footer">' +
-          '<button class="btn-sm btn-secondary" onclick="Companies.openEdit(\'' + r.id + '\')">Edit</button>' +
-          '<button class="btn-sm btn-danger-outline" onclick="Companies.remove(\'' + r.id + '\')">Delete</button>' +
+          _statusSelect(r) +
+          '<div style="display:flex;gap:6px">' +
+            '<button class="btn-sm btn-secondary" onclick="Companies.openEdit(\'' + r.id + '\')">Edit</button>' +
+            '<button class="btn-sm btn-danger-outline" onclick="Companies.remove(\'' + r.id + '\')">Delete</button>' +
+          '</div>' +
         '</div>' +
       '</div>';
     });
@@ -86,6 +89,22 @@ const Companies = (() => {
       '</div></div>';
   }
 
+  function _statusSelect(r) {
+    const status = r.status || "New";
+    const colors = { "New":"#9B8EC4", "Applied":"#22c55e", "Pass":"#ef4444" };
+    const color  = colors[status] || colors["New"];
+    return '<select class="co-status-select" ' +
+        'data-id="' + r.id + '" ' +
+        'onchange="Companies.setStatus(this)" ' +
+        'style="font-size:12px;font-weight:600;border:1px solid ' + color + '40;' +
+               'background:' + color + '15;color:' + color + ';' +
+               'border-radius:6px;padding:3px 8px;cursor:pointer;outline:none;">' +
+      ['New','Applied','Pass'].map(function(s) {
+        return '<option value="' + s + '"' + (status === s ? ' selected' : '') + '>' + s + '</option>';
+      }).join('') +
+    '</select>';
+  }
+
   function _field(label,id,type,value) {
     return '<div class="form-row"><label class="form-label">'+label+'</label><input id="'+id+'" type="'+type+'" class="form-input" value="'+_esc(value)+'"></div>';
   }
@@ -111,11 +130,35 @@ const Companies = (() => {
     _editId=null; App.rerender();
   }
 
+  function setStatus(select) {
+    const id     = select.dataset.id;
+    const status = select.value;
+    if (status === "Pass") {
+      if (confirm("Mark as Pass and delete this company?")) {
+        Storage.Companies.remove(id);
+        App.rerender();
+        return;
+      } else {
+        // User cancelled — revert the select back to the saved value
+        const saved = (Storage.Companies.getById(id) || {}).status || "New";
+        select.value = saved;
+        return;
+      }
+    }
+    Storage.Companies.update(id, { status });
+    // Recolor the select in place without a full rerender
+    const colors = { "New":"#9B8EC4", "Applied":"#22c55e" };
+    const color  = colors[status] || "#9B8EC4";
+    select.style.borderColor  = color + "40";
+    select.style.background   = color + "15";
+    select.style.color        = color;
+  }
+
   function remove(id) {
     if (confirm("Delete this company?")) { Storage.Companies.remove(id); App.rerender(); }
   }
 
   function setSearch(val) { _search=val; App.rerender(); }
 
-  return { render, openAdd, openEdit, closeModal, save, remove, setSearch };
+  return { render, openAdd, openEdit, closeModal, save, remove, setSearch, setStatus };
 })();
