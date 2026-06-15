@@ -427,6 +427,27 @@ a:hover { color: var(--accent-hover); }
 .text-danger { color: #ef4444 !important; }
 .text-warning { color: #d97706 !important; }
 
+.rec-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.rec-link:hover { text-decoration: underline; color: var(--accent-hover); }
+
+.rec-link-empty {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+.rec-link-empty:hover { color: var(--accent); }
+
 /* ══════════════════════════════════════
    Dashboard
 ══════════════════════════════════════ */

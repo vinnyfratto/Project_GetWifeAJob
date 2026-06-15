@@ -38,13 +38,21 @@ const Recruiters = (() => {
       // Contact line: show email/phone only if filled in
       const contactLine = [r.email, r.phone].filter(Boolean).join(" · ");
       const nameCell = '<strong>' + (r.name||"") + '</strong>' +
-        (contactLine ? '<br><span class="text-muted" style="font-size:11px">' + contactLine + '</span>' : '') +
         (tags ? '<br><span class="tags-cell" style="margin-top:4px">' + tags + '</span>' : '');
+
+      const websiteLink = r.website
+        ? '<a href="' + r.website + '" target="_blank" rel="noopener" class="rec-link">Website</a>'
+        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add website">+ Website</button>';
+      const emailLink = r.email
+        ? '<a href="mailto:' + r.email + '" class="rec-link">Email</a>'
+        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add email">+ Email</button>';
+      const contactCell = '<span style="display:flex;gap:10px;align-items:center">' + websiteLink + '<span style="color:var(--border-strong)">|</span>' + emailLink + '</span>';
+
       tableRows += '<tr>' +
         '<td>' + nameCell + '</td>' +
+        '<td>' + contactCell + '</td>' +
         '<td><span class="badge badge-' + (r.priority||"").toLowerCase() + '">' + (r.priority||"") + '</span></td>' +
         '<td><span class="badge badge-' + (r.radiology_fit==="High" ? "green" : "gray") + '">' + (r.radiology_fit||"—") + '</span></td>' +
-        '<td><span class="badge badge-' + (r.remote_focus==="Yes" ? "purple" : "gray") + '">' + (r.remote_focus||"—") + '</span></td>' +
         '<td class="text-muted">' + (r.lastContactDate||"—") + '</td>' +
         '<td class="' + (isOverdue ? "text-danger" : isDueToday ? "text-warning" : "text-muted") + '">' +
           (r.nextFollowUpDate||"—") + (isOverdue ? " ⚠" : isDueToday ? " !" : "") +
@@ -57,7 +65,7 @@ const Recruiters = (() => {
     });
 
     if (!tableRows) {
-      tableRows = '<tr><td colspan="8" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
+      tableRows = '<tr><td colspan="7" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
     }
 
     return '<div class="view-header">' +
@@ -77,9 +85,9 @@ const Recruiters = (() => {
         '<table class="data-table sortable">' +
           '<thead><tr>' +
             _th("Agency / Recruiter","name") +
+            '<th>Contact</th>' +
             _th("Priority","priority") +
             '<th>Radiology Fit</th>' +
-            '<th>Remote</th>' +
             _th("Last Contact","lastContactDate") +
             _th("Next Follow-Up","nextFollowUpDate") +
             '<th>Actions</th>' +
