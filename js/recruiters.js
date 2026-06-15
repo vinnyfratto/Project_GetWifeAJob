@@ -34,16 +34,21 @@ const Recruiters = (() => {
     rows.forEach(function(r) {
       const isOverdue = r.nextFollowUpDate && r.nextFollowUpDate < today;
       const isDueToday = r.nextFollowUpDate && r.nextFollowUpDate === today;
-      const stars = _stars(r.rating||0);
       const tags = (r.tags||[]).map(function(t){ return '<span class="tag">' + t + '</span>'; }).join("");
+      // Contact line: show email/phone only if filled in
+      const contactLine = [r.email, r.phone].filter(Boolean).join(" · ");
+      const nameCell = '<strong>' + (r.name||"") + '</strong>' +
+        (contactLine ? '<br><span class="text-muted" style="font-size:11px">' + contactLine + '</span>' : '') +
+        (tags ? '<br><span class="tags-cell" style="margin-top:4px">' + tags + '</span>' : '');
       tableRows += '<tr>' +
-        '<td><strong>' + (r.name||"") + '</strong>' + (tags ? '<br><span class="tags-cell">' + tags + '</span>' : '') + '</td>' +
-        '<td>' + (r.company||"") + '</td>' +
-        '<td><a href="mailto:' + (r.email||"") + '" class="link">' + (r.email||"") + '</a><br><span class="text-muted">' + (r.phone||"") + '</span></td>' +
+        '<td>' + nameCell + '</td>' +
         '<td><span class="badge badge-' + (r.priority||"").toLowerCase() + '">' + (r.priority||"") + '</span></td>' +
-        '<td class="stars-cell">' + stars + '</td>' +
+        '<td><span class="badge badge-' + (r.radiology_fit==="High" ? "green" : "gray") + '">' + (r.radiology_fit||"—") + '</span></td>' +
+        '<td><span class="badge badge-' + (r.remote_focus==="Yes" ? "purple" : "gray") + '">' + (r.remote_focus||"—") + '</span></td>' +
         '<td class="text-muted">' + (r.lastContactDate||"—") + '</td>' +
-        '<td class="' + (isOverdue ? "text-danger" : isDueToday ? "text-warning" : "text-muted") + '">' + (r.nextFollowUpDate||"—") + (isOverdue ? " ⚠" : "") + '</td>' +
+        '<td class="' + (isOverdue ? "text-danger" : isDueToday ? "text-warning" : "text-muted") + '">' +
+          (r.nextFollowUpDate||"—") + (isOverdue ? " ⚠" : isDueToday ? " !" : "") +
+        '</td>' +
         '<td class="actions-cell">' +
           '<button class="btn-icon" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Edit">✏️</button>' +
           '<button class="btn-icon btn-danger" onclick="Recruiters.remove(\'' + r.id + '\')" title="Delete">🗑</button>' +
@@ -71,9 +76,12 @@ const Recruiters = (() => {
       '<div class="table-wrap">' +
         '<table class="data-table sortable">' +
           '<thead><tr>' +
-            _th("Name","name") + _th("Company","company") + _th("Contact","email") +
-            _th("Priority","priority") + '<th>Rating</th>' +
-            _th("Last Contact","lastContactDate") + _th("Next Follow-Up","nextFollowUpDate") +
+            _th("Agency / Recruiter","name") +
+            _th("Priority","priority") +
+            '<th>Radiology Fit</th>' +
+            '<th>Remote</th>' +
+            _th("Last Contact","lastContactDate") +
+            _th("Next Follow-Up","nextFollowUpDate") +
             '<th>Actions</th>' +
           '</tr></thead>' +
           '<tbody>' + tableRows + '</tbody>' +
