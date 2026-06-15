@@ -31,7 +31,7 @@ const Dashboard = (() => {
     {
       id:      "companies",
       label:   "Companies",
-      desc:    "Remote healthcare employers across the US",
+      desc:    "Remote healthcare employers across Texas",
       icon:    "🏢",
       count:   function(){ return Storage.Companies.getAll().length; },
     },
