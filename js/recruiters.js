@@ -53,10 +53,6 @@ const Recruiters = (() => {
         '<td>' + contactCell + '</td>' +
         '<td><span class="badge badge-' + (r.priority||"").toLowerCase() + '">' + (r.priority||"") + '</span></td>' +
         '<td><span class="badge badge-' + (r.radiology_fit==="High" ? "green" : "gray") + '">' + (r.radiology_fit||"—") + '</span></td>' +
-        '<td class="text-muted">' + (r.lastContactDate||"—") + '</td>' +
-        '<td class="' + (isOverdue ? "text-danger" : isDueToday ? "text-warning" : "text-muted") + '">' +
-          (r.nextFollowUpDate||"—") + (isOverdue ? " ⚠" : isDueToday ? " !" : "") +
-        '</td>' +
         '<td class="actions-cell">' +
           '<button class="btn-icon" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Edit">✏️</button>' +
           '<button class="btn-icon btn-danger" onclick="Recruiters.remove(\'' + r.id + '\')" title="Delete">🗑</button>' +
@@ -65,7 +61,7 @@ const Recruiters = (() => {
     });
 
     if (!tableRows) {
-      tableRows = '<tr><td colspan="7" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
+      tableRows = '<tr><td colspan="5" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
     }
 
     return '<div class="view-header">' +
@@ -88,8 +84,6 @@ const Recruiters = (() => {
             '<th>Contact</th>' +
             _th("Priority","priority") +
             '<th>Radiology Fit</th>' +
-            _th("Last Contact","lastContactDate") +
-            _th("Next Follow-Up","nextFollowUpDate") +
             '<th>Actions</th>' +
           '</tr></thead>' +
           '<tbody>' + tableRows + '</tbody>' +
