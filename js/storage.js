@@ -13,7 +13,7 @@ const Storage = (() => {
     followups:    "jt_followups",
     resumevault:  "jt_resumevault",
     settings:     "jt_settings",
-    seeded:       "jt_seeded_v3",   // bumped to force reseed with curated radiology fit data
+    seeded:       "jt_seeded_v4",   // bumped: replace-before-seed fix, no more duplicates
   };
 
   function _get(key) {
@@ -167,6 +167,13 @@ const Storage = (() => {
       { type:"LinkedIn",      title:"LinkedIn Profile",        url:"", notes:"Add your LinkedIn URL here. Keep Open to Work status active.", dateAdded:_today(0) },
       { type:"Certification", title:"CPC-A Certification",     url:"https://www.aapc.com/certification/cpc/", notes:"Certified Professional Coder - Apprentice (CPC-A). AAPC certification page.", dateAdded:_today(0) },
     ];
+
+    // Replace (not append) so re-seeding never duplicates
+    Recruiters.replace([]);
+    Companies.replace([]);
+    Jobs.replace([]);
+    Applications.replace([]);
+    ResumeVault.replace([]);
 
     recruiters.forEach(function(r){ Recruiters.add(r); });
     companies.forEach(function(c){ Companies.add(c); });

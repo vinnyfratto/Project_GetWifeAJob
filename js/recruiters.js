@@ -40,13 +40,9 @@ const Recruiters = (() => {
       const nameCell = '<strong>' + (r.name||"") + '</strong>' +
         (tags ? '<br><span class="tags-cell" style="margin-top:4px">' + tags + '</span>' : '');
 
-      const websiteLink = r.website
-        ? '<a href="' + r.website + '" target="_blank" rel="noopener" class="rec-link">Website</a>'
-        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add website">+ Website</button>';
-      const emailLink = r.email
-        ? '<a href="mailto:' + r.email + '" class="rec-link">Email</a>'
-        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add email">+ Email</button>';
-      const contactCell = '<span style="display:flex;gap:10px;align-items:center">' + websiteLink + '<span style="color:var(--border-strong)">|</span>' + emailLink + '</span>';
+      const contactCell = r.website
+        ? '<a href="' + r.website + '" target="_blank" rel="noopener" class="rec-link">Website ↗</a>'
+        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add website">+ Add Website</button>';
 
       const fitClass = r.radiology_fit==="High" ? "badge-green" : r.radiology_fit==="Medium" ? "badge-medium" : "badge-gray";
       tableRows += '<tr>' +
