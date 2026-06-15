@@ -77,7 +77,7 @@ const Dashboard = (() => {
 
     return '<div class="dash-welcome">' +
         '<h2 class="dash-hello">' + greeting + ', ' + (s.name || "Sara") + ' 👋</h2>' +
-        '<p class="dash-sub">Welcome to Project: Find Wife a Job</p>' +
+        '<p class="dash-sub"><b>Project:</b> Find Wife a Job</p>' +
       '</div>' +
       '<div class="dash-tile-grid">' + tiles + KITTEN_TILE + '</div>';
   }
