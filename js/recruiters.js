@@ -53,7 +53,8 @@ const Recruiters = (() => {
             (r.website   ? '<div class="company-meta"><span class="icon-sm">🔗</span><a href="' + r.website + '" target="_blank" class="link">Website ↗</a></div>' : '') +
             (r.notes     ? '<div class="company-notes">' + _esc(r.notes) + '</div>' : '') +
           '</div>' +
-          '<div class="company-card-footer" style="justify-content:flex-end">' +
+          '<div class="company-card-footer">' +
+            _statusSelect(r) +
             '<div style="display:flex;gap:6px">' +
               '<button class="btn-sm btn-secondary" onclick="Recruiters.openEdit(\'' + r.id + '\')">Edit</button>' +
               '<button class="btn-sm btn-danger-outline" onclick="Recruiters.remove(\'' + r.id + '\')">Delete</button>' +
@@ -78,6 +79,41 @@ const Recruiters = (() => {
       '</div>' +
       '<div class="company-grid">' + cards + '</div>' +
       _modal();
+  }
+
+  function _statusSelect(r) {
+    const status = r.status || "New";
+    const colors = { "New":"#9B8EC4", "Contacted":"#22c55e", "Pass":"#ef4444" };
+    const color  = colors[status] || colors["New"];
+    return '<select class="co-status-select" data-id="' + r.id + '" onchange="Recruiters.setStatus(this)" ' +
+      'style="font-size:12px;font-weight:600;border:1px solid ' + color + '40;' +
+             'background:' + color + '15;color:' + color + ';' +
+             'border-radius:6px;padding:3px 8px;cursor:pointer;outline:none;">' +
+      ['New','Contacted','Pass'].map(function(s) {
+        return '<option value="' + s + '"' + (status===s?' selected':'') + '>' + s + '</option>';
+      }).join('') +
+    '</select>';
+  }
+
+  function setStatus(select) {
+    const id     = select.dataset.id;
+    const status = select.value;
+    if (status === "Pass") {
+      if (confirm("Mark as Pass and delete this recruiter?")) {
+        Storage.Recruiters.remove(id);
+        App.rerender();
+        return;
+      } else {
+        select.value = (Storage.Recruiters.getById(id)||{}).status || "New";
+        return;
+      }
+    }
+    Storage.Recruiters.update(id, { status });
+    const colors = { "New":"#9B8EC4", "Contacted":"#22c55e" };
+    const color  = colors[status] || "#9B8EC4";
+    select.style.borderColor = color + "40";
+    select.style.background  = color + "15";
+    select.style.color       = color;
   }
 
   function _th(label, col) {
@@ -232,5 +268,5 @@ const Recruiters = (() => {
     App.rerender();
   }
 
-  return { render, openAdd, openEdit, closeModal, save, remove, setSearch, setFilter, sortBy };
+  return { render, openAdd, openEdit, closeModal, save, remove, setSearch, setFilter, sortBy, setStatus };
 })();
