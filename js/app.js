@@ -35,7 +35,7 @@ const App = (() => {
   function _buildSidebar() {
     const sidebar = document.getElementById("sidebar");
     if (!sidebar) return;
-    let nav = '<div class="sidebar-logo"><span class="logo-icon">✦</span><span class="logo-text">JobTracker</span></div>';
+    let nav = '<div class="sidebar-logo"><span class="logo-icon">✦</span><span class="logo-text">Find Wife a Job</span></div>';
     nav += '<nav class="sidebar-nav">';
     NAV_ITEMS.forEach(function(item) {
       nav += '<a href="#'+item.id+'" class="nav-item" data-view="'+item.id+'">' +

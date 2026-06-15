@@ -3,6 +3,23 @@
  */
 const Dashboard = (() => {
 
+  function _kittenDialog() {
+    const existing = document.getElementById("kitten-dialog");
+    if (existing) { existing.remove(); return; }
+    const overlay = document.createElement("div");
+    overlay.id = "kitten-dialog";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9999;";
+    overlay.innerHTML =
+      '<div style="background:var(--card-bg);border-radius:18px;padding:32px 40px;text-align:center;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.35);">' +
+        '<img src="images/kitten.jpg" style="width:220px;height:220px;object-fit:cover;border-radius:12px;margin-bottom:18px;display:block;margin-left:auto;margin-right:auto;">' +
+        '<p style="font-size:22px;font-weight:800;color:var(--text);margin:0 0 20px;">No, you find a job mommy 🐾</p>' +
+        '<button onclick="document.getElementById(\'kitten-dialog\').remove()" ' +
+          'style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:15px;font-weight:700;cursor:pointer;">OK fine 😅</button>' +
+      '</div>';
+    overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+  }
+
   const TILES = [
     {
       id:      "recruiters",
@@ -34,6 +51,12 @@ const Dashboard = (() => {
     },
   ];
 
+  const KITTEN_TILE =
+    '<div class="dash-tile" onclick="Dashboard.kittenDialog()" style="cursor:pointer;overflow:hidden;padding:0;min-height:160px;position:relative;">' +
+      '<img src="images/kitten.jpg" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" ' +
+           'onerror="this.style.display=\'none\';this.parentElement.style.background=\'var(--accent-light)\';this.parentElement.innerHTML+=\'<div style=\\\"display:flex;align-items:center;justify-content:center;height:160px;font-size:48px;\\\">🐱</div>\'">' +
+    '</div>';
+
   function render() {
     const s = Storage.Settings.get();
     const greeting = _greeting();
@@ -56,7 +79,7 @@ const Dashboard = (() => {
         '<h2 class="dash-hello">' + greeting + ', ' + (s.name || "Sara") + ' 👋</h2>' +
         '<p class="dash-sub">Where would you like to go today?</p>' +
       '</div>' +
-      '<div class="dash-tile-grid">' + tiles + '</div>';
+      '<div class="dash-tile-grid">' + tiles + KITTEN_TILE + '</div>';
   }
 
   function _greeting() {
@@ -66,5 +89,5 @@ const Dashboard = (() => {
     return "Good evening";
   }
 
-  return { render: render };
+  return { render: render, kittenDialog: _kittenDialog };
 })();
