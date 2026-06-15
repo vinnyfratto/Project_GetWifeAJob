@@ -9,7 +9,8 @@ const App = (() => {
   const NAV_ITEMS = [
     { id:"dashboard",    label:"Dashboard",      icon:"⊞" },
     { id:"recruiters",   label:"Recruiters",     icon:"👤" },
-    { id:"companies",    label:"Companies",      icon:"🏢" },
+    { id:"companies",    label:"TX Companies",   icon:"🏢" },
+    { id:"uscompanies",  label:"US Companies",   icon:"🇺🇸" },
     { id:"i35corridor",  label:"I-35 Corridor",  icon:"🛣️" },
     { id:"settings",     label:"Settings",       icon:"⚙️" },
   ];
@@ -17,6 +18,7 @@ const App = (() => {
   function init() {
     Storage.seed();
     Storage.seedI35();
+    Storage.seedUS();
     _applySettings();
     _buildSidebar();
     _buildBottomNav();
@@ -88,8 +90,9 @@ const App = (() => {
     switch(view) {
       case "dashboard":   html = Dashboard.render();   break;
       case "recruiters":  html = Recruiters.render();  break;
-      case "companies":   html = Companies.render();   break;
-      case "i35corridor": html = I35Corridor.render(); break;
+      case "companies":   html = Companies.render();    break;
+      case "uscompanies": html = USCompanies.render();  break;
+      case "i35corridor": html = I35Corridor.render();  break;
       case "settings":    html = Settings.render();    break;
       default:            html = Dashboard.render();
     }

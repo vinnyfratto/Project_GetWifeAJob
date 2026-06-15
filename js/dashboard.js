@@ -30,10 +30,17 @@ const Dashboard = (() => {
     },
     {
       id:      "companies",
-      label:   "Companies",
+      label:   "TX Companies",
       desc:    "Remote healthcare employers across Texas",
       icon:    "🏢",
       count:   function(){ return Storage.Companies.getAll().length; },
+    },
+    {
+      id:      "uscompanies",
+      label:   "US Companies",
+      desc:    "National healthcare employers outside Texas",
+      icon:    "🇺🇸",
+      count:   function(){ return Storage.USCompanies.getAll().length; },
     },
     {
       id:      "i35corridor",

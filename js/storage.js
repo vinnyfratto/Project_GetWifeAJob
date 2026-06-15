@@ -8,6 +8,7 @@ const Storage = (() => {
     recruiters:    "jt_recruiters",
     companies:     "jt_companies",
     i35companies:  "jt_i35companies",
+    uscompanies:   "jt_uscompanies",
     jobs:          "jt_jobs",
     applications:  "jt_applications",
     interviews:    "jt_interviews",
@@ -16,6 +17,7 @@ const Storage = (() => {
     settings:      "jt_settings",
     seeded:        "jt_seeded_v6",
     i35seeded:     "jt_i35seeded_v1",
+    usseeded:      "jt_usseeded_v1",
   };
 
   function _get(key) {
@@ -65,6 +67,7 @@ const Storage = (() => {
   const Recruiters    = _crud(KEYS.recruiters);
   const Companies     = _crud(KEYS.companies);
   const I35Companies  = _crud(KEYS.i35companies);
+  const USCompanies   = _crud(KEYS.uscompanies);
   const Jobs          = _crud(KEYS.jobs);
   const Applications = _crud(KEYS.applications);
   const Interviews   = _crud(KEYS.interviews);
@@ -240,6 +243,84 @@ const Storage = (() => {
     localStorage.setItem(KEYS.i35seeded, "1");
   }
 
+  function seedUS() {
+    if (localStorage.getItem(KEYS.usseeded)) return;
+    USCompanies.replace([]);
+    const us = [
+      // ── Midwest ──────────────────────────────────────────────────────────────
+      { company:"Mayo Clinic",                      state:"MN", remote_friendly:"Yes", careerPage:"https://jobs.mayoclinic.org",                notes:"World-renowned academic medical center. Large HIM/coding team. Remote coding roles across multiple specialties. Top-tier pay and benefits.", status:"New" },
+      { company:"Allina Health",                    state:"MN", remote_friendly:"Yes", careerPage:"https://www.allinahealth.org/careers",        notes:"Large MN nonprofit health system. Centralized HIM department. Remote outpatient and inpatient coding roles posted regularly.", status:"New" },
+      { company:"Essentia Health",                  state:"MN", remote_friendly:"Yes", careerPage:"https://www.essentiahealth.org/careers",      notes:"Regional health system covering MN, WI, ND. Remote coding roles available. Specialty and outpatient focus.", status:"New" },
+      { company:"Optum (UnitedHealth Group)",       state:"MN", remote_friendly:"Yes", careerPage:"https://careers.unitedhealthgroup.com",       notes:"Massive health services company. Hires hundreds of remote medical coders. Risk adjustment, outpatient, and inpatient roles. Competitive pay.", status:"New" },
+      { company:"Northwestern Medicine",            state:"IL", remote_friendly:"Yes", careerPage:"https://www.nm.org/about/careers",            notes:"Academic health system in Chicago. Large HIM department. Remote coding roles for experienced coders across multiple specialties.", status:"New" },
+      { company:"Rush University Medical Center",   state:"IL", remote_friendly:"Yes", careerPage:"https://www.rush.edu/careers",                notes:"Chicago academic medical center. Strong HIM team. Outpatient and inpatient remote coding roles. Good career growth.", status:"New" },
+      { company:"OSF HealthCare",                   state:"IL", remote_friendly:"Yes", careerPage:"https://www.osfhealthcare.org/careers",       notes:"Catholic health system across IL and MI. Remote coding roles. Outpatient multi-specialty and inpatient coding.", status:"New" },
+      { company:"UnityPoint Health",                state:"IA", remote_friendly:"Yes", careerPage:"https://jobs.unitypoint.org",                 notes:"Regional health system across IA, IL, WI. Centralized coding team. Remote roles for outpatient and inpatient coders.", status:"New" },
+      { company:"SSM Health",                       state:"MO", remote_friendly:"Yes", careerPage:"https://www.ssmhealth.com/careers",           notes:"Catholic nonprofit across MO, IL, WI, OK. Remote HIM and coding roles. Multi-specialty outpatient focus.", status:"New" },
+      { company:"BJC HealthCare",                   state:"MO", remote_friendly:"Yes", careerPage:"https://www.bjc.org/careers",                 notes:"Major St. Louis health system. Large centralized coding team. Remote coding roles posted regularly. Academic medical center affiliation.", status:"New" },
+      { company:"Mercy Health System",              state:"MO", remote_friendly:"Yes", careerPage:"https://www.mercy.net/careers",               notes:"Large Catholic health system across MO, AR, KS, OK. Remote HIM coders hired regularly. Outpatient and inpatient roles.", status:"New" },
+      { company:"Corewell Health",                  state:"MI", remote_friendly:"Yes", careerPage:"https://careers.corewellhealth.org",          notes:"Michigan's largest health system (formerly Spectrum + Beaumont). Remote coding roles. Multi-specialty and inpatient coding.", status:"New" },
+      { company:"Henry Ford Health",                state:"MI", remote_friendly:"Yes", careerPage:"https://careers.henryford.com",               notes:"Detroit-based integrated health system. Large HIM department. Remote coding roles available for experienced coders.", status:"New" },
+      { company:"Trinity Health",                   state:"MI", remote_friendly:"Yes", careerPage:"https://www.trinity-health.org/careers",      notes:"National Catholic system headquartered in MI. Remote coding roles across dozens of facilities. Strong benefits and stability.", status:"New" },
+      { company:"Indiana University Health",        state:"IN", remote_friendly:"Yes", careerPage:"https://iuhealth.org/careers",                notes:"Indiana's largest health system. Strong HIM department. Remote outpatient and inpatient coding. Academic medical center affiliation.", status:"New" },
+      { company:"OhioHealth",                       state:"OH", remote_friendly:"Yes", careerPage:"https://careers.ohiohealth.com",              notes:"Columbus-based nonprofit health system. Remote coding roles for experienced coders. Outpatient and inpatient multi-specialty.", status:"New" },
+      { company:"Bon Secours Mercy Health",         state:"OH", remote_friendly:"Yes", careerPage:"https://jobs.bsmhealth.com",                  notes:"Large Catholic system across OH, KY, VA, and more. Remote HIM coding roles. Multi-specialty and outpatient focus.", status:"New" },
+      { company:"Cleveland Clinic",                 state:"OH", remote_friendly:"Yes", careerPage:"https://jobs.clevelandclinic.org",            notes:"World-class academic medical center. Remote coding roles for experienced coders. High complexity cases across multiple specialties.", status:"New" },
+      { company:"Nationwide Children's Hospital",   state:"OH", remote_friendly:"Yes", careerPage:"https://careers.nationwidechildrens.org",    notes:"Top pediatric hospital in Columbus. Remote pediatric coding roles. Specialty and outpatient coding focus.", status:"New" },
+      { company:"Cincinnati Children's Hospital",   state:"OH", remote_friendly:"Yes", careerPage:"https://jobs.cincinnatichildrens.org",        notes:"Top-ranked pediatric hospital. Remote coding roles for specialty pediatric cases. Strong HIM department.", status:"New" },
+      { company:"Sanford Health",                   state:"SD", remote_friendly:"Yes", careerPage:"https://careers.sanfordhealth.org",           notes:"Large rural health system across SD, ND, MN. Remote coding roles regularly posted. Multi-specialty outpatient focus.", status:"New" },
+      // ── Northeast ────────────────────────────────────────────────────────────
+      { company:"Mass General Brigham",             state:"MA", remote_friendly:"Yes", careerPage:"https://careers.massgeneralbrigham.org",      notes:"Leading academic health system (MGH, Brigham & Women's). Large HIM team. Remote coding roles for experienced coders. Top-tier compensation.", status:"New" },
+      { company:"Boston Children's Hospital",       state:"MA", remote_friendly:"Yes", careerPage:"https://careers.childrenshospital.org",       notes:"Top pediatric hospital in the US. Remote pediatric coding roles. Specialty coding across complex pediatric cases.", status:"New" },
+      { company:"Yale New Haven Health",            state:"CT", remote_friendly:"Yes", careerPage:"https://careers.ynhhs.org",                   notes:"Academic health system in CT. Remote coding roles for outpatient and inpatient. Strong HIM department. Competitive pay.", status:"New" },
+      { company:"Hartford HealthCare",              state:"CT", remote_friendly:"Yes", careerPage:"https://jobs.hartfordhealthcare.org",          notes:"Largest health system in CT. Centralized HIM team. Remote coding roles for outpatient and inpatient specialties.", status:"New" },
+      { company:"UPMC",                             state:"PA", remote_friendly:"Yes", careerPage:"https://careers.upmc.com",                    notes:"Major Pittsburgh academic medical center and insurer. Large remote coding program. Inpatient, outpatient, and specialty roles.", status:"New" },
+      { company:"Children's Hospital of Philadelphia", state:"PA", remote_friendly:"Yes", careerPage:"https://careers.chop.edu",                notes:"Top pediatric hospital. Remote coding roles for complex pediatric specialties. Strong HIM team and competitive pay.", status:"New" },
+      { company:"Johns Hopkins Medicine",           state:"MD", remote_friendly:"Yes", careerPage:"https://careers.hopkinsmedicine.org",         notes:"World-renowned academic medical center. Remote coding roles for experienced coders. High-complexity multi-specialty cases.", status:"New" },
+      { company:"Sentara Healthcare",               state:"VA", remote_friendly:"Yes", careerPage:"https://www.sentara.com/careers",             notes:"Large health system across VA and NC. Remote HIM coding roles. Multi-specialty outpatient and inpatient coding.", status:"New" },
+      { company:"Inova Health System",              state:"VA", remote_friendly:"Yes", careerPage:"https://www.inova.org/careers",               notes:"Northern VA health system near DC. Remote coding roles. Outpatient, inpatient, and specialty coding focus.", status:"New" },
+      { company:"WVU Medicine",                     state:"WV", remote_friendly:"Yes", careerPage:"https://careers.wvumedicine.org",             notes:"Academic health system in WV. Remote coding roles available. Multi-specialty outpatient and inpatient focus.", status:"New" },
+      // ── Southeast ────────────────────────────────────────────────────────────
+      { company:"Vanderbilt University Medical Center", state:"TN", remote_friendly:"Yes", careerPage:"https://careers.vumc.org",               notes:"Top academic medical center in Nashville. Large HIM team. Remote coding roles across complex multi-specialty cases. Strong pay.", status:"New" },
+      { company:"Ballad Health",                    state:"TN", remote_friendly:"Yes", careerPage:"https://www.balladhealth.org/careers",        notes:"Regional health system in TN and VA. Remote coding roles for outpatient and inpatient. Strong community focus.", status:"New" },
+      { company:"Lifepoint Health",                 state:"TN", remote_friendly:"Yes", careerPage:"https://jobs.lifepointhealth.com",            notes:"National hospital company based in TN. Remote HIM coding roles across many facilities. Outpatient and inpatient coding.", status:"New" },
+      { company:"Emory Healthcare",                 state:"GA", remote_friendly:"Yes", careerPage:"https://careers.emoryhealthcare.org",         notes:"Academic health system in Atlanta. Large HIM department. Remote coding roles for experienced coders. Multi-specialty focus.", status:"New" },
+      { company:"Wellstar Health System",           state:"GA", remote_friendly:"Yes", careerPage:"https://careers.wellstar.org",                notes:"Largest nonprofit health system in GA. Remote coding roles. Outpatient and inpatient multi-specialty coding.", status:"New" },
+      { company:"Piedmont Healthcare",              state:"GA", remote_friendly:"Yes", careerPage:"https://careers.piedmont.org",                notes:"Large Atlanta-based nonprofit. Remote HIM coding roles. Multi-specialty outpatient and inpatient coding. Good benefits.", status:"New" },
+      { company:"Atrium Health",                    state:"NC", remote_friendly:"Yes", careerPage:"https://careers.atriumhealth.org",            notes:"Major health system across NC, SC, GA (now Advocate Health). Remote coding roles regularly posted. Large central HIM team.", status:"New" },
+      { company:"Duke Health",                      state:"NC", remote_friendly:"Yes", careerPage:"https://careers.dukehealth.org",              notes:"Academic medical center in Durham. Remote coding roles for experienced coders. High-complexity multi-specialty cases.", status:"New" },
+      { company:"UNC Health",                       state:"NC", remote_friendly:"Yes", careerPage:"https://jobs.unchealthcare.org",               notes:"Academic health system across NC. Remote HIM coding roles. Outpatient, inpatient, and specialty coding.", status:"New" },
+      { company:"Novant Health",                    state:"NC", remote_friendly:"Yes", careerPage:"https://www.novanthealth.org/careers",         notes:"Large nonprofit across NC, SC, VA. Remote coding roles posted regularly. Multi-specialty outpatient and inpatient focus.", status:"New" },
+      { company:"Prisma Health",                    state:"SC", remote_friendly:"Yes", careerPage:"https://careers.prismahealth.org",             notes:"Largest health system in SC. Remote coding roles. Outpatient and inpatient multi-specialty coding. Good stability.", status:"New" },
+      { company:"MUSC Health",                      state:"SC", remote_friendly:"Yes", careerPage:"https://careers.musc.edu",                    notes:"Academic medical center in Charleston. Remote coding roles for experienced coders. Multi-specialty focus.", status:"New" },
+      { company:"UAB Health System",                state:"AL", remote_friendly:"Yes", careerPage:"https://www.uab.edu/jobs",                    notes:"Academic medical center in Birmingham. Large HIM team. Remote coding roles across multiple specialties.", status:"New" },
+      { company:"Ochsner Health",                   state:"LA", remote_friendly:"Yes", careerPage:"https://careers.ochsner.org",                 notes:"Largest health system in LA. Remote coding roles regularly posted. Multi-specialty outpatient and inpatient coding.", status:"New" },
+      { company:"Baptist Health (Louisville)",      state:"KY", remote_friendly:"Yes", careerPage:"https://careers.baptisthealth.com",            notes:"Large health system in KY. Remote HIM coding roles. Outpatient and inpatient multi-specialty coding. Good benefits.", status:"New" },
+      { company:"AdventHealth",                     state:"FL", remote_friendly:"Yes", careerPage:"https://careers.adventhealth.com",            notes:"Large faith-based system across FL and nationally. Remote coding roles. Multi-specialty outpatient and inpatient coding.", status:"New" },
+      { company:"Orlando Health",                   state:"FL", remote_friendly:"Yes", careerPage:"https://careers.orlandohealth.com",           notes:"Major health system in central FL. Remote HIM coding roles. Outpatient and inpatient multi-specialty coding.", status:"New" },
+      { company:"BayCare Health System",            state:"FL", remote_friendly:"Yes", careerPage:"https://careers.baycare.org",                 notes:"Large nonprofit in Tampa Bay area. Remote coding roles for outpatient and inpatient specialties. Competitive benefits.", status:"New" },
+      { company:"UF Health",                        state:"FL", remote_friendly:"Yes", careerPage:"https://hr.ufhealth.org/careers",             notes:"Academic health system at Univ. of Florida. Remote coding roles. Multi-specialty and outpatient coding focus.", status:"New" },
+      // ── West ─────────────────────────────────────────────────────────────────
+      { company:"Kaiser Permanente",                state:"CA", remote_friendly:"Yes", careerPage:"https://jobs.kaiserpermanente.org",           notes:"Massive integrated health plan and delivery system. Large HIM/coding team. Remote coding roles across multiple regions and specialties.", status:"New" },
+      { company:"Cedars-Sinai Medical Center",      state:"CA", remote_friendly:"Yes", careerPage:"https://jobs.cedars-sinai.edu",              notes:"Top LA academic medical center. Remote coding roles for experienced coders. High-complexity multi-specialty cases. Strong pay.", status:"New" },
+      { company:"UCLA Health",                      state:"CA", remote_friendly:"Yes", careerPage:"https://careers.uclahealth.org",             notes:"Major academic health system. Remote coding roles for outpatient and inpatient. Multi-specialty and complex case focus.", status:"New" },
+      { company:"Sutter Health",                    state:"CA", remote_friendly:"Yes", careerPage:"https://www.sutterhealth.org/careers",        notes:"Large nonprofit health system in Northern CA. Remote HIM coding roles. Outpatient and inpatient multi-specialty coding.", status:"New" },
+      { company:"Scripps Health",                   state:"CA", remote_friendly:"Yes", careerPage:"https://www.scripps.org/careers",            notes:"San Diego-based nonprofit. Remote coding roles available. Multi-specialty outpatient and inpatient coding.", status:"New" },
+      { company:"Intermountain Health",             state:"UT", remote_friendly:"Yes", careerPage:"https://intermountainhealthcare.org/careers", notes:"Large nonprofit across UT, ID, CO and beyond. Remote HIM coding roles. Outpatient, inpatient, and specialty coding.", status:"New" },
+      { company:"UCHealth",                         state:"CO", remote_friendly:"Yes", careerPage:"https://www.uchealth.org/careers",           notes:"Academic health system in CO. Remote coding roles for experienced coders. Multi-specialty outpatient and inpatient.", status:"New" },
+      { company:"Providence Health & Services",     state:"WA", remote_friendly:"Yes", careerPage:"https://jobs.providence.org",                notes:"Large Catholic system across WA, OR, CA and beyond. Remote HIM coding roles. Multi-specialty and outpatient coding.", status:"New" },
+      { company:"MultiCare Health System",          state:"WA", remote_friendly:"Yes", careerPage:"https://www.multicare.org/careers",          notes:"WA-based nonprofit health system. Remote coding roles for outpatient and inpatient specialties. Good benefits.", status:"New" },
+      { company:"Seattle Children's Hospital",      state:"WA", remote_friendly:"Yes", careerPage:"https://jobs.seattlechildrens.org",          notes:"Top pediatric hospital. Remote pediatric coding roles. Specialty and outpatient coding for complex pediatric cases.", status:"New" },
+      { company:"Legacy Health",                    state:"OR", remote_friendly:"Yes", careerPage:"https://www.legacyhealth.org/careers",       notes:"Portland-area nonprofit health system. Remote coding roles. Outpatient and inpatient multi-specialty coding.", status:"New" },
+      { company:"PeaceHealth",                      state:"WA", remote_friendly:"Yes", careerPage:"https://www.peacehealth.org/careers",        notes:"Catholic system across WA, OR, AK. Remote HIM coding roles. Outpatient and inpatient multi-specialty coding.", status:"New" },
+      { company:"St. Luke's Health System",         state:"ID", remote_friendly:"Yes", careerPage:"https://careers.stlukesonline.org",          notes:"Largest health system in ID. Remote coding roles available. Multi-specialty outpatient and inpatient coding.", status:"New" },
+      { company:"Banner Health",                    state:"AZ", remote_friendly:"Yes", careerPage:"https://careers.bannerhealth.com",           notes:"Large nonprofit across AZ and other western states. Remote HIM coding roles regularly posted. Multi-specialty coding.", status:"New" },
+      { company:"R1 RCM",                           state:"IL", remote_friendly:"Yes", careerPage:"https://www.r1rcm.com/careers",              notes:"Large revenue cycle management company. Remote medical coders hired nationwide. Strong career path in RCM. Competitive pay.", status:"New" },
+    ];
+    us.forEach(function(c){ USCompanies.add(c); });
+    localStorage.setItem(KEYS.usseeded, "1");
+  }
+
   function exportAll() {
     return {
       version: 1,
@@ -247,6 +328,7 @@ const Storage = (() => {
       recruiters:    Recruiters.getAll(),
       companies:     Companies.getAll(),
       i35companies:  I35Companies.getAll(),
+      uscompanies:   USCompanies.getAll(),
       jobs:          Jobs.getAll(),
       applications: Applications.getAll(),
       interviews:   Interviews.getAll(),
@@ -260,6 +342,7 @@ const Storage = (() => {
     if (data.recruiters)   Recruiters.replace(data.recruiters);
     if (data.companies)    Companies.replace(data.companies);
     if (data.i35companies) I35Companies.replace(data.i35companies);
+    if (data.uscompanies)  USCompanies.replace(data.uscompanies);
     if (data.jobs)         Jobs.replace(data.jobs);
     if (data.applications) Applications.replace(data.applications);
     if (data.interviews)   Interviews.replace(data.interviews);
@@ -269,5 +352,5 @@ const Storage = (() => {
     localStorage.setItem(KEYS.seeded, "1");
   }
 
-  return { Recruiters, Companies, I35Companies, Jobs, Applications, Interviews, FollowUps, ResumeVault, Settings, seed, seedI35, exportAll, importAll, KEYS };
+  return { Recruiters, Companies, I35Companies, USCompanies, Jobs, Applications, Interviews, FollowUps, ResumeVault, Settings, seed, seedI35, seedUS, exportAll, importAll, KEYS };
 })();
