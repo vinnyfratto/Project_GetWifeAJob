@@ -44,11 +44,11 @@ const Recruiters = (() => {
         ? '<a href="' + r.website + '" target="_blank" rel="noopener" class="rec-link">Website ↗</a>'
         : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add website">+ Add Website</button>';
 
-      const fitClass = r.radiology_fit==="High" ? "badge-green" : r.radiology_fit==="Medium" ? "badge-medium" : "badge-gray";
+      const typeClass = r.agency_type === "Direct Employer" ? "badge-green" : "badge-purple";
       tableRows += '<tr>' +
         '<td>' + nameCell + '</td>' +
         '<td>' + contactCell + '</td>' +
-        '<td><span class="badge ' + fitClass + '">' + (r.radiology_fit||"—") + '</span></td>' +
+        '<td><span class="badge ' + typeClass + '">' + (r.agency_type||"Staffing Agency") + '</span></td>' +
         '<td class="actions-cell">' +
           '<button class="btn-icon" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Edit">✏️</button>' +
           '<button class="btn-icon btn-danger" onclick="Recruiters.remove(\'' + r.id + '\')" title="Delete">🗑</button>' +
@@ -76,9 +76,9 @@ const Recruiters = (() => {
       '<div class="table-wrap">' +
         '<table class="data-table sortable">' +
           '<thead><tr>' +
-            _th("Agency / Recruiter","name") +
-            '<th>Contact</th>' +
-            '<th>Radiology Fit</th>' +
+            _th("Agency / Company","name") +
+            '<th>Website</th>' +
+            '<th>Type</th>' +
             '<th>Actions</th>' +
           '</tr></thead>' +
           '<tbody>' + tableRows + '</tbody>' +
