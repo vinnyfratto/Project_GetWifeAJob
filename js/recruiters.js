@@ -8,57 +8,59 @@ const Recruiters = (() => {
   let _filterPriority = "";
   let _editId = null;
 
+  function _logo(r) {
+    const domain = r.website ? r.website.replace(/https?:\/\/(www\.)?/,"").split("/")[0] : "";
+    const initial = (r.name||"?")[0].toUpperCase();
+    const logoUrl = domain ? "https://logo.clearbit.com/" + domain : "";
+    const fallback = '<div class="rec-logo-fallback">' + initial + '</div>';
+    if (!logoUrl) return fallback;
+    return '<img class="rec-logo-img" src="' + logoUrl + '" alt="" ' +
+      'onerror="this.outerHTML=\'' + fallback.replace(/'/g,"\\'") + '\'">';
+  }
+
   function render() {
     let rows = Storage.Recruiters.getAll();
     if (_searchTerm) {
       const s = _searchTerm.toLowerCase();
       rows = rows.filter(function(r) {
         return (r.name||"").toLowerCase().includes(s) ||
-               (r.company||"").toLowerCase().includes(s) ||
-               (r.email||"").toLowerCase().includes(s) ||
+               (r.specialty||"").toLowerCase().includes(s) ||
                (r.notes||"").toLowerCase().includes(s);
       });
     }
     if (_filterPriority) {
-      rows = rows.filter(function(r){ return r.priority === _filterPriority; });
+      rows = rows.filter(function(r){ return r.agency_type === _filterPriority; });
     }
-    rows.sort(function(a,b) {
-      const av = (a[_sortCol]||"").toString().toLowerCase();
-      const bv = (b[_sortCol]||"").toString().toLowerCase();
-      return av < bv ? -_sortDir : av > bv ? _sortDir : 0;
-    });
 
-    const today = new Date().toISOString().slice(0,10);
-
-    let tableRows = "";
+    let cards = "";
     rows.forEach(function(r) {
-      const isOverdue = r.nextFollowUpDate && r.nextFollowUpDate < today;
-      const isDueToday = r.nextFollowUpDate && r.nextFollowUpDate === today;
-      const tags = (r.tags||[]).map(function(t){ return '<span class="tag">' + t + '</span>'; }).join("");
-      // Contact line: show email/phone only if filled in
-      const contactLine = [r.email, r.phone].filter(Boolean).join(" · ");
-      const nameCell = '<strong>' + (r.name||"") + '</strong>' +
-        (tags ? '<br><span class="tags-cell" style="margin-top:4px">' + tags + '</span>' : '');
-
-      const contactCell = r.website
-        ? '<a href="' + r.website + '" target="_blank" rel="noopener" class="rec-link">Website ↗</a>'
-        : '<button class="rec-link-empty" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Add website">+ Add Website</button>';
-
       const typeClass = r.agency_type === "Direct Employer" ? "badge-green" : "badge-purple";
-      tableRows += '<tr>' +
-        '<td>' + nameCell + '</td>' +
-        '<td>' + contactCell + '</td>' +
-        '<td><span class="badge ' + typeClass + '">' + (r.agency_type||"Staffing Agency") + '</span></td>' +
-        '<td class="actions-cell">' +
-          '<button class="btn-icon" onclick="Recruiters.openEdit(\'' + r.id + '\')" title="Edit">✏️</button>' +
-          '<button class="btn-icon btn-danger" onclick="Recruiters.remove(\'' + r.id + '\')" title="Delete">🗑</button>' +
-        '</td>' +
-      '</tr>';
+      cards +=
+        '<div class="company-card">' +
+          '<div class="company-card-header" style="gap:12px;align-items:center;">' +
+            '<div class="rec-logo-wrap">' + _logo(r) + '</div>' +
+            '<div style="flex:1;min-width:0;">' +
+              '<div class="company-name" style="font-size:14px">' + _esc(r.name||"") + '</div>' +
+              '<div class="company-badges" style="margin-top:4px">' +
+                '<span class="badge ' + typeClass + '">' + (r.agency_type||"Staffing Agency") + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="company-card-body">' +
+            (r.specialty ? '<div class="company-meta"><span class="icon-sm">💼</span>' + _esc(r.specialty) + '</div>' : '') +
+            (r.website   ? '<div class="company-meta"><span class="icon-sm">🔗</span><a href="' + r.website + '" target="_blank" class="link">Website ↗</a></div>' : '') +
+            (r.notes     ? '<div class="company-notes">' + _esc(r.notes) + '</div>' : '') +
+          '</div>' +
+          '<div class="company-card-footer" style="justify-content:flex-end">' +
+            '<div style="display:flex;gap:6px">' +
+              '<button class="btn-sm btn-secondary" onclick="Recruiters.openEdit(\'' + r.id + '\')">Edit</button>' +
+              '<button class="btn-sm btn-danger-outline" onclick="Recruiters.remove(\'' + r.id + '\')">Delete</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
     });
 
-    if (!tableRows) {
-      tableRows = '<tr><td colspan="4" class="empty-row">No recruiters found. Click "+ Add Recruiter" to get started.</td></tr>';
-    }
+    if (!cards) cards = '<div class="empty-state">No recruiters found.</div>';
 
     return '<div class="view-header">' +
         '<h2>Recruiters <span class="count-badge">' + Storage.Recruiters.getAll().length + '</span></h2>' +
@@ -67,23 +69,12 @@ const Recruiters = (() => {
       '<div class="toolbar">' +
         '<input class="search-input" type="text" placeholder="Search recruiters..." value="' + _esc(_searchTerm) + '" oninput="Recruiters.setSearch(this.value)">' +
         '<select class="filter-select" onchange="Recruiters.setFilter(this.value)">' +
-          '<option value="">All Priorities</option>' +
-          '<option value="High"' + (_filterPriority==="High"?" selected":"") + '>High</option>' +
-          '<option value="Medium"' + (_filterPriority==="Medium"?" selected":"") + '>Medium</option>' +
-          '<option value="Low"' + (_filterPriority==="Low"?" selected":"") + '>Low</option>' +
+          '<option value="">All Types</option>' +
+          '<option value="Direct Employer"' + (_filterPriority==="Direct Employer"?" selected":"") + '>Direct Employers</option>' +
+          '<option value="Staffing Agency"' + (_filterPriority==="Staffing Agency"?" selected":"") + '>Staffing Agencies</option>' +
         '</select>' +
       '</div>' +
-      '<div class="table-wrap">' +
-        '<table class="data-table sortable">' +
-          '<thead><tr>' +
-            _th("Agency / Company","name") +
-            '<th>Website</th>' +
-            '<th>Type</th>' +
-            '<th>Actions</th>' +
-          '</tr></thead>' +
-          '<tbody>' + tableRows + '</tbody>' +
-        '</table>' +
-      '</div>' +
+      '<div class="company-grid">' + cards + '</div>' +
       _modal();
   }
 
