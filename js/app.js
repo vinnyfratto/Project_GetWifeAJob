@@ -7,14 +7,16 @@ const App = (() => {
   let _globalSearch = "";
 
   const NAV_ITEMS = [
-    { id:"dashboard",  label:"Dashboard",  icon:"⊞" },
-    { id:"recruiters", label:"Recruiters", icon:"👤" },
-    { id:"companies",  label:"Companies",  icon:"🏢" },
-    { id:"settings",   label:"Settings",   icon:"⚙️" },
+    { id:"dashboard",    label:"Dashboard",      icon:"⊞" },
+    { id:"recruiters",   label:"Recruiters",     icon:"👤" },
+    { id:"companies",    label:"Companies",      icon:"🏢" },
+    { id:"i35corridor",  label:"I-35 Corridor",  icon:"🛣️" },
+    { id:"settings",     label:"Settings",       icon:"⚙️" },
   ];
 
   function init() {
     Storage.seed();
+    Storage.seedI35();
     _applySettings();
     _buildSidebar();
     _buildBottomNav();
@@ -84,17 +86,12 @@ const App = (() => {
     if (!main) return;
     let html = "";
     switch(view) {
-      case "dashboard":    html = Dashboard.render();    break;
-      case "recruiters":   html = Recruiters.render();   break;
-      case "companies":    html = Companies.render();    break;
-      case "jobs":         html = Jobs.render();         break;
-      case "applications": html = Applications.render(); break;
-      case "interviews":   html = Interviews.render();   break;
-      case "followups":    html = FollowUps.render();    break;
-      case "resumevault":  html = ResumeVault.render();  break;
-      case "analytics":    html = Analytics.render();    break;
-      case "settings":     html = Settings.render();     break;
-      default:             html = Dashboard.render();
+      case "dashboard":   html = Dashboard.render();   break;
+      case "recruiters":  html = Recruiters.render();  break;
+      case "companies":   html = Companies.render();   break;
+      case "i35corridor": html = I35Corridor.render(); break;
+      case "settings":    html = Settings.render();    break;
+      default:            html = Dashboard.render();
     }
     main.innerHTML = html;
   }

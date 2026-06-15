@@ -5,15 +5,17 @@
  */
 const Storage = (() => {
   const KEYS = {
-    recruiters:   "jt_recruiters",
-    companies:    "jt_companies",
-    jobs:         "jt_jobs",
-    applications: "jt_applications",
-    interviews:   "jt_interviews",
-    followups:    "jt_followups",
-    resumevault:  "jt_resumevault",
-    settings:     "jt_settings",
-    seeded:       "jt_seeded_v5",   // bumped: medical coder recruiter list, agency_type field
+    recruiters:    "jt_recruiters",
+    companies:     "jt_companies",
+    i35companies:  "jt_i35companies",
+    jobs:          "jt_jobs",
+    applications:  "jt_applications",
+    interviews:    "jt_interviews",
+    followups:     "jt_followups",
+    resumevault:   "jt_resumevault",
+    settings:      "jt_settings",
+    seeded:        "jt_seeded_v5",
+    i35seeded:     "jt_i35seeded_v1",
   };
 
   function _get(key) {
@@ -60,9 +62,10 @@ const Storage = (() => {
     };
   }
 
-  const Recruiters   = _crud(KEYS.recruiters);
-  const Companies    = _crud(KEYS.companies);
-  const Jobs         = _crud(KEYS.jobs);
+  const Recruiters    = _crud(KEYS.recruiters);
+  const Companies     = _crud(KEYS.companies);
+  const I35Companies  = _crud(KEYS.i35companies);
+  const Jobs          = _crud(KEYS.jobs);
   const Applications = _crud(KEYS.applications);
   const Interviews   = _crud(KEYS.interviews);
   const FollowUps    = _crud(KEYS.followups);
@@ -179,13 +182,52 @@ const Storage = (() => {
     console.log("[Storage] Seed data loaded.");
   }
 
+  function seedI35() {
+    if (localStorage.getItem(KEYS.i35seeded)) return;
+    I35Companies.replace([]);
+    const i35 = [
+      // ── San Antonio ──────────────────────────────────────────────────────────
+      { company:"University Health",                  city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.universityhealthsystem.com/careers",         notes:"Large public health system serving Bexar County. Active medical coding dept. Hires coders for inpatient, outpatient, and ED coding. Good benefits.", status:"New" },
+      { company:"Baptist Health System (Tenet)",      city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.baptisthealthsystem.com/careers",            notes:"Multi-hospital system in SA. Part of Tenet Healthcare. Remote coding roles posted regularly for outpatient and inpatient specialties.", status:"New" },
+      { company:"Methodist Healthcare (HCA)",         city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.sahealth.com/careers",                       notes:"HCA-owned multi-hospital system across SA. Strong remote HIM department. Frequently hires experienced medical coders.", status:"New" },
+      { company:"CHRISTUS Santa Rosa Health System",  city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://careers.christushealth.org",                     notes:"Catholic nonprofit system with multiple SA campuses. HIM department hires remote coders. Strong mission-driven culture.", status:"New" },
+      { company:"South Texas VA Health Care System",  city:"San Antonio", state:"TX", remote_friendly:"No",  careerPage:"https://www.usajobs.gov",                                notes:"VA system covering South TX. Search USAJOBS for medical coder GS positions. On-site but stable employment and federal benefits.", status:"New" },
+      { company:"UT Health San Antonio",              city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://jobs.uthscsa.edu",                               notes:"Academic medical center and physician group. Large coding department covering multiple specialties. Remote-friendly for experienced coders.", status:"New" },
+      { company:"Brooke Army Medical Center (BAMC)",  city:"San Antonio", state:"TX", remote_friendly:"No",  careerPage:"https://www.usajobs.gov",                                notes:"Military medical center — civilian coder positions available via USAJOBS. On-site. Federal pay scale and benefits.", status:"New" },
+      { company:"Southwest General Hospital",         city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.swgeneralhospital.com/careers",              notes:"Community hospital in SW San Antonio. Smaller HIM team, good for outpatient coding roles. Remote flexibility for experienced staff.", status:"New" },
+      { company:"Post Acute Medical",                 city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.postacutemedical.com/careers",               notes:"Long-term acute care and rehab facilities. Hires coders for specialty coding including LTACH. Remote roles available.", status:"New" },
+      { company:"CommuniCare Health Centers",         city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.communicarehc.org/careers",                 notes:"Federally Qualified Health Center (FQHC) serving SA. Hires medical coders and billers for outpatient multi-specialty encounters.", status:"New" },
+      // ── New Braunfels ────────────────────────────────────────────────────────
+      { company:"CHRISTUS Santa Rosa – New Braunfels",city:"New Braunfels", state:"TX", remote_friendly:"Yes", careerPage:"https://careers.christushealth.org",                  notes:"CHRISTUS system hospital in New Braunfels. Shares HIM infrastructure with SA campuses. Remote coding roles available through CHRISTUS system.", status:"New" },
+      { company:"Resolute Health Hospital",           city:"New Braunfels", state:"TX", remote_friendly:"Yes", careerPage:"https://www.resolutehealth.com/careers",               notes:"Community hospital in New Braunfels. Smaller coding team. Good opportunity for outpatient and ED coding roles close to home.", status:"New" },
+      // ── San Marcos ───────────────────────────────────────────────────────────
+      { company:"Ascension Seton Hays – San Marcos",  city:"San Marcos",   state:"TX", remote_friendly:"Yes", careerPage:"https://healthcare.ascension.org/careers",             notes:"Ascension system hospital in San Marcos. Part of Ascension Seton network. Remote coding roles available through the Ascension system.", status:"New" },
+      { company:"Central Texas Medical Center",       city:"San Marcos",   state:"TX", remote_friendly:"Yes", careerPage:"https://www.ctmc.org/careers",                         notes:"Independent community hospital in San Marcos. Active HIM department. Good option for local outpatient and inpatient coding.", status:"New" },
+      // ── Kyle / Buda ──────────────────────────────────────────────────────────
+      { company:"Ascension Seton Hays – Kyle",        city:"Kyle",         state:"TX", remote_friendly:"Yes", careerPage:"https://healthcare.ascension.org/careers",             notes:"Growing hospital in Kyle serving fast-expanding Hays County. Ascension system remote coding roles available. High-growth area.", status:"New" },
+      { company:"Kyle Regional Medical Center",       city:"Kyle",         state:"TX", remote_friendly:"Yes", careerPage:"https://www.stewardhealth.org/careers",                notes:"Steward Health Care hospital in Kyle. Outpatient and inpatient coding roles. Growing facility serving the Kyle-Buda corridor.", status:"New" },
+      // ── Austin ───────────────────────────────────────────────────────────────
+      { company:"St. David's HealthCare",             city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://stdavids.com/careers",                         notes:"Large HCA-affiliated multi-hospital system in Austin. Strong remote HIM program. Regularly hires medical coders across all specialties.", status:"New" },
+      { company:"Ascension Seton (Austin)",           city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://healthcare.ascension.org/careers",             notes:"Major nonprofit health system in Austin. Large HIM and coding department. Remote-friendly for experienced coders.", status:"New" },
+      { company:"Dell Seton Medical Center (UT)",     city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://jobs.utsouthwestern.edu",                      notes:"Academic medical center in Austin affiliated with UT. Complex coding environment. Strong career growth for experienced coders.", status:"New" },
+      { company:"Austin Regional Clinic (ARC)",       city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://www.austinregionalclinic.com/careers",         notes:"Largest physician group in Austin. Outpatient multi-specialty coding. Hires medical coders and billers. Good work-life balance reputation.", status:"New" },
+      { company:"Dell Children's Medical Center",     city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://healthcare.ascension.org/careers",             notes:"Pediatric hospital in Austin under Ascension. Specialty coding for pediatric cases. Remote roles available through Ascension system.", status:"New" },
+      { company:"CommunityCare (FQHC – Austin)",      city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://www.communitycaretx.org/careers",             notes:"Federally Qualified Health Center serving Austin. Outpatient multi-specialty coding and billing roles. Mission-driven, stable employer.", status:"New" },
+      { company:"Baylor Scott & White – Round Rock",  city:"Round Rock",   state:"TX", remote_friendly:"Yes", careerPage:"https://jobs.bswhealth.com",                           notes:"BSW hospital north of Austin. Part of largest TX nonprofit health system. Remote coding roles available through BSW central HIM.", status:"New" },
+      { company:"UT Health Austin",                   city:"Austin",       state:"TX", remote_friendly:"Yes", careerPage:"https://jobs.utsouthwestern.edu",                      notes:"UT multispecialty physician practice in Austin. Outpatient coding roles available. Growing academic practice with competitive pay.", status:"New" },
+    ];
+    i35.forEach(function(c){ I35Companies.add(c); });
+    localStorage.setItem(KEYS.i35seeded, "1");
+  }
+
   function exportAll() {
     return {
       version: 1,
       exportedAt: new Date().toISOString(),
-      recruiters:   Recruiters.getAll(),
-      companies:    Companies.getAll(),
-      jobs:         Jobs.getAll(),
+      recruiters:    Recruiters.getAll(),
+      companies:     Companies.getAll(),
+      i35companies:  I35Companies.getAll(),
+      jobs:          Jobs.getAll(),
       applications: Applications.getAll(),
       interviews:   Interviews.getAll(),
       followups:    FollowUps.getAll(),
@@ -197,6 +239,7 @@ const Storage = (() => {
   function importAll(data) {
     if (data.recruiters)   Recruiters.replace(data.recruiters);
     if (data.companies)    Companies.replace(data.companies);
+    if (data.i35companies) I35Companies.replace(data.i35companies);
     if (data.jobs)         Jobs.replace(data.jobs);
     if (data.applications) Applications.replace(data.applications);
     if (data.interviews)   Interviews.replace(data.interviews);
@@ -206,5 +249,5 @@ const Storage = (() => {
     localStorage.setItem(KEYS.seeded, "1");
   }
 
-  return { Recruiters, Companies, Jobs, Applications, Interviews, FollowUps, ResumeVault, Settings, seed, exportAll, importAll, KEYS };
+  return { Recruiters, Companies, I35Companies, Jobs, Applications, Interviews, FollowUps, ResumeVault, Settings, seed, seedI35, exportAll, importAll, KEYS };
 })();
