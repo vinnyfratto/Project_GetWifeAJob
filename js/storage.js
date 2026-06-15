@@ -79,6 +79,7 @@ const Storage = (() => {
         yearsExperience: "16",
         darkMode: false,
         defaultView: "dashboard",
+        anthropicKey: "",
       });
     },
     set: function(patch) {

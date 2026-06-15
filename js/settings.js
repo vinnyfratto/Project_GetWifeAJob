@@ -37,6 +37,17 @@ const Settings = (() => {
           '</div>' +
         '</div>' +
         '<div class="settings-section">' +
+          '<h3 class="settings-section-title">AI Job Search</h3>' +
+          '<div class="form-group">' +
+            '<div class="form-row">' +
+              '<label class="form-label">Anthropic API Key</label>' +
+              '<input id="s-apikey" type="password" class="form-input" placeholder="sk-ant-..." value="' + (s.anthropicKey||"").replace(/"/g,"&quot;") + '">' +
+              '<span style="font-size:11px;color:var(--text-muted);margin-top:4px;display:block">Stored only in your browser. Never sent anywhere except Anthropic\'s API.</span>' +
+            '</div>' +
+          '</div>' +
+          '<button class="btn-primary" onclick="Settings.saveApiKey()">Save API Key</button>' +
+        '</div>' +
+        '<div class="settings-section">' +
           '<h3 class="settings-section-title">Data Management</h3>' +
           '<div class="data-actions">' +
             '<button class="btn-secondary" onclick="ImportExport.exportJSON()">Export JSON</button>' +
@@ -80,6 +91,12 @@ const Settings = (() => {
     App.applyDarkMode(val);
   }
 
+  function saveApiKey() {
+    const key = (document.getElementById("s-apikey").value || "").trim();
+    Storage.Settings.set({ anthropicKey: key });
+    App.showToast(key ? "API key saved." : "API key cleared.");
+  }
+
   function clearData() {
     if (confirm("This will delete ALL data. Are you sure?")) {
       if (confirm("Really? This cannot be undone.")) {
@@ -91,5 +108,5 @@ const Settings = (() => {
 
   function _(s){ return s||""; }
 
-  return { render, saveProfile, savePrefs, toggleDark, clearData };
+  return { render, saveProfile, savePrefs, toggleDark, saveApiKey, clearData };
 })();

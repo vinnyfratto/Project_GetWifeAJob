@@ -54,7 +54,10 @@ const Jobs = (() => {
 
     return '<div class="view-header">' +
         '<h2>Jobs <span class="count-badge">' + Storage.Jobs.getAll().length + '</span></h2>' +
-        '<button class="btn-primary" onclick="Jobs.openAdd()">+ Add Job</button>' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          '<button class="btn-secondary" id="ai-refresh-btn" onclick="Jobs.refreshWithAI()" title="Use Anthropic AI to find current remote TX medical coding jobs">✦ Find Remote TX Jobs</button>' +
+          '<button class="btn-primary" onclick="Jobs.openAdd()">+ Add Job</button>' +
+        '</div>' +
       '</div>' +
       '<div class="toolbar">' +
         '<input class="search-input" type="text" placeholder="Search jobs..." value="' + _esc(_search) + '" oninput="Jobs.setSearch(this.value)">' +
@@ -143,5 +146,120 @@ const Jobs = (() => {
   function setSearch(val){ _search=val; App.rerender(); }
   function setFilter(val){ _filterStatus=val; App.rerender(); }
 
-  return { render, openAdd, openEdit, closeModal, save, markApplied, setSearch, setFilter };
+  function refreshWithAI() {
+    const key = (Storage.Settings.get().anthropicKey || "").trim();
+    if (!key) {
+      App.showToast("Add your Anthropic API key in Settings first.");
+      App.navigate("settings");
+      return;
+    }
+
+    // Show loading state on the button
+    const btn = document.getElementById("ai-refresh-btn");
+    if (btn) { btn.disabled = true; btn.textContent = "⏳ Searching..."; }
+
+    // Build a list of companies already tracked so Claude avoids duplicates
+    const existing = Storage.Jobs.getAll().map(function(j){ return j.company; });
+    const today = new Date().toISOString().slice(0,10);
+
+    const prompt = [
+      "You are a job search assistant for an experienced Medical Coding professional.",
+      "Profile: 16 years experience | Radiology Coding specialist | Medical Billing | CPC-A certified | Texas resident | seeking REMOTE positions.",
+      "",
+      "Find remote medical billing and medical coding job openings at TEXAS-BASED companies or companies with strong Texas operations.",
+      "Focus on: Radiology Coding, Medical Billing, Revenue Cycle (RCM), HIM, Outpatient Coding, Diagnostic Imaging Coding.",
+      "",
+      "Return ONLY a raw JSON array — no markdown, no code fences, no explanation. Format:",
+      '[{"company":"","title":"","location":"Remote/TX","fit_score":85,"notes":""}]',
+      "",
+      "Rules:",
+      "- Texas-based employers or companies with major TX health system clients",
+      "- Remote-eligible only",
+      "- fit_score: 92-95 for radiology/diagnostic imaging coding, 85-90 for medical billing/RCM, 78-84 for general coding",
+      "- notes: 1-2 sentences on the role and why it fits her background",
+      "- Return 12-15 jobs",
+      "- Today's date: " + today,
+      "- Skip these companies already tracked: " + (existing.length ? existing.join(", ") : "none"),
+    ].join("\n");
+
+    fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "x-api-key":                          key,
+        "anthropic-version":                  "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+        "content-type":                       "application/json",
+      },
+      body: JSON.stringify({
+        model:      "claude-haiku-4-5-20251001",
+        max_tokens: 2048,
+        messages:   [{ role: "user", content: prompt }],
+      }),
+    })
+    .then(function(res) {
+      if (!res.ok) {
+        return res.json().then(function(e) {
+          throw new Error((e.error && e.error.message) || ("API error " + res.status));
+        });
+      }
+      return res.json();
+    })
+    .then(function(data) {
+      const text = (data.content && data.content[0] && data.content[0].text) || "";
+
+      // Strip any accidental markdown fences before parsing
+      const clean = text.replace(/```json|```/gi, "").trim();
+      let jobs;
+      try {
+        jobs = JSON.parse(clean);
+      } catch(e) {
+        throw new Error("Could not parse AI response as JSON. Raw: " + text.slice(0, 200));
+      }
+
+      if (!Array.isArray(jobs) || !jobs.length) {
+        throw new Error("AI returned an empty list.");
+      }
+
+      const added = [];
+      const skipped = [];
+      const todayStr = new Date().toISOString().slice(0,10);
+      const allJobs  = Storage.Jobs.getAll();
+
+      jobs.forEach(function(j) {
+        if (!j.company || !j.title) return;
+        // Skip if exact company+title already exists
+        const dup = allJobs.find(function(x) {
+          return x.company.toLowerCase() === (j.company||"").toLowerCase() &&
+                 x.title.toLowerCase()   === (j.title||"").toLowerCase();
+        });
+        if (dup) { skipped.push(j.title); return; }
+
+        Storage.Jobs.add({
+          company:   j.company,
+          title:     j.title,
+          location:  j.location  || "Remote/TX",
+          fit_score: parseInt(j.fit_score) || 82,
+          status:    "New",
+          dateAdded: todayStr,
+          notes:     (j.notes || "") + " [AI Suggested]",
+        });
+        added.push(j.title);
+      });
+
+      App.rerender();
+      const msg = added.length
+        ? ("✦ Added " + added.length + " job" + (added.length > 1 ? "s" : "") +
+           (skipped.length ? " (" + skipped.length + " duplicate" + (skipped.length > 1 ? "s" : "") + " skipped)" : ""))
+        : "All results were already in your list.";
+      App.showToast(msg, 5000);
+    })
+    .catch(function(err) {
+      console.error("[Jobs.refreshWithAI]", err);
+      App.showToast("Error: " + err.message, 6000);
+      const b = document.getElementById("ai-refresh-btn");
+      if (b) { b.disabled = false; b.textContent = "✦ Find Remote TX Jobs"; }
+    });
+  }
+
+  return { render, openAdd, openEdit, closeModal, save, markApplied, setSearch, setFilter, refreshWithAI };
 })();
