@@ -30,6 +30,7 @@ const Companies = (() => {
           (r.careerPage ? '<div class="company-meta"><span class="icon-sm">🔗</span><a href="' + r.careerPage + '" target="_blank" class="link">Career Page</a></div>' : '') +
           (r.contact ? '<div class="company-meta"><span class="icon-sm">👤</span>' + r.contact + '</div>' : '') +
           (r.notes ? '<div class="company-notes">' + r.notes + '</div>' : '') +
+          (r.validated ? '<div class="company-validated">✓ Validated on ' + _esc(r.validated) + '</div>' : '') +
         '</div>' +
         '<div class="company-card-footer">' +
           _statusSelect(r) +
@@ -43,7 +44,7 @@ const Companies = (() => {
     if (!cards) cards = '<div class="empty-state">No companies found. Click "+ Add Company" to begin.</div>';
 
     return '<div class="view-header">' +
-        '<h2>Companies <span class="count-badge">' + Storage.Companies.getAll().length + '</span></h2>' +
+        '<h2>TX Companies <span class="count-badge">' + Storage.Companies.getAll().length + '</span></h2>' +
         '<button class="btn-primary" onclick="Companies.openAdd()">+ Add Company</button>' +
       '</div>' +
       '<div class="toolbar">' +

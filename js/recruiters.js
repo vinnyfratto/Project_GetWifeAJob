@@ -52,6 +52,7 @@ const Recruiters = (() => {
             (r.specialty ? '<div class="company-meta"><span class="icon-sm">💼</span>' + _esc(r.specialty) + '</div>' : '') +
             (r.website   ? '<div class="company-meta"><span class="icon-sm">🔗</span><a href="' + r.website + '" target="_blank" class="link">Website ↗</a></div>' : '') +
             (r.notes     ? '<div class="company-notes">' + _esc(r.notes) + '</div>' : '') +
+            (r.validated ? '<div class="company-validated">✓ Validated on ' + _esc(r.validated) + '</div>' : '') +
           '</div>' +
           '<div class="company-card-footer">' +
             _statusSelect(r) +
