@@ -194,6 +194,13 @@ const App = (() => {
     setTimeout(function() { toast.classList.remove("toast-visible"); }, duration);
   }
 
+  // Open a card's URL in a new tab, unless the click landed on an interactive control
+  function openUrl(ev, url) {
+    if (!url) return;
+    if (ev && ev.target && ev.target.closest && ev.target.closest("button, select, a, input, textarea, label")) return;
+    window.open(url, "_blank", "noopener");
+  }
+
   // Initialize on DOM ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
@@ -201,5 +208,5 @@ const App = (() => {
     init();
   }
 
-  return { rerender, navigate, applyDarkMode, showToast };
+  return { rerender, navigate, applyDarkMode, showToast, openUrl };
 })();

@@ -38,7 +38,9 @@ const Recruiters = (() => {
     rows.forEach(function(r) {
       const typeClass = r.agency_type === "Direct Employer" ? "badge-green" : "badge-purple";
       cards +=
-        '<div class="company-card">' +
+        '<div class="company-card' + (r.website ? ' card-clickable' : '') + '"' +
+            ' data-url="' + _esc(r.website||"") + '"' +
+            (r.website ? ' onclick="App.openUrl(event, this.dataset.url)"' : '') + '>' +
           '<div class="company-card-header" style="gap:12px;align-items:center;">' +
             '<div class="rec-logo-wrap">' + _logo(r) + '</div>' +
             '<div style="flex:1;min-width:0;">' +

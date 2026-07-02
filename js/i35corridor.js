@@ -28,7 +28,9 @@ const I35Corridor = (() => {
 
     let cards = "";
     rows.forEach(function(r) {
-      cards += '<div class="company-card">' +
+      cards += '<div class="company-card' + (r.careerPage ? ' card-clickable' : '') + '"' +
+          ' data-url="' + _esc(r.careerPage||"") + '"' +
+          (r.careerPage ? ' onclick="App.openUrl(event, this.dataset.url)"' : '') + '>' +
         '<div class="company-card-header">' +
           '<div class="company-name">' + _esc(r.company||"") + '</div>' +
           '<div class="company-badges">' +
