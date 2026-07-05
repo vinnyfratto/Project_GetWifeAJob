@@ -22,6 +22,7 @@ const Companies = (() => {
         '<div class="company-card-header">' +
           '<div class="company-name">' + (r.company||"") + '</div>' +
           '<div class="company-badges">' +
+            (App.isCpcA(r.company) ? '<span class="badge badge-cpca" title="Currently accepts CPC-A">CPC-A ✓</span>' : '') +
             (r.remote_friendly==="Yes" ? '<span class="badge badge-green">Remote</span>' : '') +
             (r.target==="Yes" ? '<span class="badge badge-purple">Target</span>' : '') +
             '<span class="badge badge-' + (r.priority||"").toLowerCase() + '">' + (r.priority||"") + '</span>' +

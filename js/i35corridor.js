@@ -34,6 +34,7 @@ const I35Corridor = (() => {
         '<div class="company-card-header">' +
           '<div class="company-name">' + _esc(r.company||"") + '</div>' +
           '<div class="company-badges">' +
+            (App.isCpcA(r.company) ? '<span class="badge badge-cpca" title="Currently accepts CPC-A">CPC-A ✓</span>' : '') +
             (r.remote_friendly==="Yes" ? '<span class="badge badge-green">Remote</span>' : '<span class="badge badge-gray">On-Site</span>') +
           '</div>' +
         '</div>' +

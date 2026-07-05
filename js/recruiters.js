@@ -46,6 +46,7 @@ const Recruiters = (() => {
             '<div style="flex:1;min-width:0;">' +
               '<div class="company-name" style="font-size:14px">' + _esc(r.name||"") + '</div>' +
               '<div class="company-badges" style="margin-top:4px">' +
+                (App.isCpcA(r.name) ? '<span class="badge badge-cpca" title="Currently accepts CPC-A">CPC-A ✓</span>' : '') +
                 '<span class="badge ' + typeClass + '">' + (r.agency_type||"Staffing Agency") + '</span>' +
               '</div>' +
             '</div>' +

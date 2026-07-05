@@ -194,6 +194,17 @@ const App = (() => {
     setTimeout(function() { toast.classList.remove("toast-visible"); }, duration);
   }
 
+  // Employers/recruiters whose current remote postings explicitly accept CPC-A (apprentice).
+  // Sara is CPC-A, so these are her strongest first-apply targets. Confirmed via validation research.
+  const CPC_A_FRIENDLY = [
+    "Inova Health System",
+    "PeaceHealth",
+    "OSF HealthCare",
+    "Cincinnati Children's Hospital",
+    "The Judge Group",
+  ];
+  function isCpcA(name) { return CPC_A_FRIENDLY.indexOf((name||"").trim()) !== -1; }
+
   // Open a card's URL in a new tab, unless the click landed on an interactive control
   function openUrl(ev, url) {
     if (!url) return;
@@ -208,5 +219,5 @@ const App = (() => {
     init();
   }
 
-  return { rerender, navigate, applyDarkMode, showToast, openUrl };
+  return { rerender, navigate, applyDarkMode, showToast, openUrl, isCpcA };
 })();
