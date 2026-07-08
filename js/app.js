@@ -201,6 +201,10 @@ const App = (() => {
     "PeaceHealth",
     "OSF HealthCare",
     "Cincinnati Children's Hospital",
+    "BJC HealthCare",
+    "Henry Ford Health",
+    "Piedmont Healthcare",
+    "Austin Regional Clinic (ARC)",
     "The Judge Group",
   ];
   function isCpcA(name) { return CPC_A_FRIENDLY.indexOf((name||"").trim()) !== -1; }
