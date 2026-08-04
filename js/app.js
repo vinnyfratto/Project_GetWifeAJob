@@ -199,11 +199,7 @@ const App = (() => {
   const CPC_A_FRIENDLY = [
     "Inova Health System",
     "PeaceHealth",
-    "OSF HealthCare",
-    "Cincinnati Children's Hospital",
     "BJC HealthCare",
-    "Henry Ford Health",
-    "Piedmont Healthcare",
     "Austin Regional Clinic (ARC)",
     "The Judge Group",
   ];
