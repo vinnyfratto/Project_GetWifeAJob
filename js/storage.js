@@ -15,13 +15,13 @@ const Storage = (() => {
     followups:     "jt_followups",
     resumevault:   "jt_resumevault",
     settings:      "jt_settings",
-    seeded:        "jt_seeded_v11",
-    i35seeded:     "jt_i35seeded_v6",
-    usseeded:      "jt_usseeded_v6",
+    seeded:        "jt_seeded_v12",
+    i35seeded:     "jt_i35seeded_v7",
+    usseeded:      "jt_usseeded_v7",
   };
 
   // Date every seed entry was cross-referenced and validated. Bump when re-validated.
-  const VDATE = "Jul 8, 2026";
+  const VDATE = "Aug 4, 2026";
 
   function _get(key) {
     try { return JSON.parse(localStorage.getItem(key)) || []; }
@@ -113,7 +113,7 @@ const Storage = (() => {
       // ── Staffing Agencies — specialize in medical coding and HIM placements ──
       { name:"AMN Healthcare",              website:"https://www.amnhealthcare.com",                notes:"Large national healthcare staffing firm with a dedicated HIM and coding division. Frequently places remote medical coders at TX health systems.", agency_type:"Staffing Agency", specialty:"Medical Coding/HIM", tags:["HIM"] },
       { name:"Medix",                       website:"https://www.medixteam.com",               notes:"Healthcare staffing with strong HIM and medical coding focus. Active in the Texas market. Places outpatient and multi-specialty coders remotely.", agency_type:"Staffing Agency", specialty:"Medical Coding/HIM", tags:["HIM"] },
-      { name:"himagine solutions",          website:"https://www.himaginesolutions.com",           notes:"✅ Confirmed active July 2026. One of the largest US medical coding companies (Omega-Himagine). Hires remote coders directly across all specialties. CPC/COC/CCS.", agency_type:"Direct Employer", specialty:"Medical Coding", tags:["100%-remote","coding-company"] },
+      { name:"himagine solutions",          website:"https://www.omegahms.com",           notes:"✅ Confirmed active July 2026. One of the largest US medical coding companies (Omega-Himagine). Hires remote coders directly across all specialties. CPC/COC/CCS.", agency_type:"Direct Employer", specialty:"Medical Coding", tags:["100%-remote","coding-company"] },
       { name:"GHR Healthcare",              website:"https://www.ghrhealthcare.com",               notes:"HIM and coding specialist staffing firm. Places remote coders at TX hospitals and physician groups. Strong health-system client relationships.", agency_type:"Staffing Agency", specialty:"Medical Coding/HIM", tags:["HIM"] },
       { name:"TAG MedStaffing",             website:"https://www.tagmedstaffing.com",              notes:"Medical coding and HIM specialist staffing agency. Actively places coders at TX health systems. Good reputation in the coding community.", agency_type:"Staffing Agency", specialty:"Medical Coding/HIM", tags:["HIM"] },
       { name:"Cross Country Healthcare",    website:"https://www.crosscountry.com",      notes:"Large healthcare staffing firm with a dedicated HIM division. Offers remote contract and permanent medical coding roles nationwide.", agency_type:"Staffing Agency", specialty:"Medical Coding/HIM", tags:["HIM","contract"] },
@@ -136,7 +136,7 @@ const Storage = (() => {
       { company:"CommonSpirit Health", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://www.commonspirit.careers/employment/remote-medical-coding-jobs/35300/8230896/1000000000100/2", contact:"", notes:"✅ Dedicated remote medical coding jobs page confirmed active June 2026. National nonprofit with TX presence. Apply direct at commonspirit.careers for fastest response." },
       { company:"Memorial Hermann", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://jobs.memorialhermann.org", contact:"", notes:"✅ Confirmed active hiring June 2026 per Indeed. Houston-based nonprofit. Large centralized coding team. Outpatient and specialty coding roles. Strong benefits." },
       { company:"MD Anderson Cancer Center", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://www.mdanderson.org/about-md-anderson/careers.html", contact:"", notes:"Houston oncology center. Radiology and oncology coding background is a strong fit. Hybrid/remote coding roles posted periodically. High prestige, competitive pay." },
-      { company:"Texas Children's Hospital", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://www.texaschildrenspeople.org/careers/", contact:"", notes:"Premier pediatric system in Houston. Large HIM coding team. Remote outpatient coding roles posted regularly. Strong benefits and mission-driven culture." },
+      { company:"Texas Children's Hospital", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://texaschildrens.org/careers", contact:"", notes:"Premier pediatric system in Houston. Large HIM coding team. Remote outpatient coding roles posted regularly. Strong benefits and mission-driven culture." },
       { company:"University Health", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://careers.universityhealth.com", contact:"", notes:"✅ Confirmed active June 2026 — appeared in SA-area coder search results. San Antonio public health system. Outpatient and specialty coder roles. Remote-friendly." },
       { company:"Christus Health", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://careers.christushealth.org", contact:"", notes:"Catholic nonprofit with 60+ TX locations. HIM department posts remote coding roles regularly. Good benefits and job stability. Search 'medical coder' at careers.christushealth.org." },
       { company:"Houston Methodist", state:"TX", remote_friendly:"Yes", target:"Yes", priority:"High", careerPage:"https://www.houstonmethodistcareers.org", contact:"", notes:"Major Houston academic health system. Centralized HIM coding team. Remote coder roles posted across multiple specialties. Competitive pay and strong reputation." },
@@ -223,7 +223,7 @@ const Storage = (() => {
       { company:"ECLAT Health Solutions",             city:"San Antonio", state:"TX", remote_friendly:"Yes", careerPage:"https://www.eclathealth.com/careers",           notes:"✅ Confirmed active in SA coder search June 2026. Medical coding and billing company with SA presence. Remote coding roles. Hires certified coders directly.", status:"New" },
       // ── New Braunfels ────────────────────────────────────────────────────────
       { company:"CHRISTUS Santa Rosa – New Braunfels",city:"New Braunfels", state:"TX", remote_friendly:"Yes", careerPage:"https://careers.christushealth.org",                  notes:"CHRISTUS system hospital in New Braunfels. Shares HIM infrastructure with SA campuses. Remote coding roles posted through central CHRISTUS HIM team.", status:"New" },
-      { company:"Resolute Health Hospital (Baptist)", city:"New Braunfels", state:"TX", remote_friendly:"Yes", careerPage:"https://www.resolutehealth.com/careers",               notes:"Community hospital in New Braunfels. Smaller coding team — experienced coders get noticed. Good for outpatient and ED coding. Growing I-35 corridor facility.", status:"New" },
+      { company:"Resolute Health Hospital (Baptist)", city:"New Braunfels", state:"TX", remote_friendly:"Yes", careerPage:"https://jobs.tenethealth.com/resolute-baptist-hospital-jobs",               notes:"Community hospital in New Braunfels. Smaller coding team — experienced coders get noticed. Good for outpatient and ED coding. Growing I-35 corridor facility.", status:"New" },
       // ── San Marcos ───────────────────────────────────────────────────────────
       { company:"CHRISTUS Santa Rosa – San Marcos",   city:"San Marcos",   state:"TX", remote_friendly:"Yes", careerPage:"https://careers.christushealth.org",                    notes:"Formerly Central Texas Medical Center (rebranded under CHRISTUS 2020). San Marcos hospital. Remote coding roles posted through the central CHRISTUS HIM team.", status:"New" },
       // ── Kyle / Buda ──────────────────────────────────────────────────────────
